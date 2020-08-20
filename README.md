@@ -19,7 +19,6 @@ code/analysis/preliminary -- analysis at the onset of the study
 code/analysis/wave1 -- analysis of the data from the first wave
 estimates/wave1 -- results of the model estimates from the first wave
 ```
-=============
 
 <img src="https://img.shields.io/badge/Study%20Status-Design%20Finalized-brightgreen.svg" alt="Study Status: Design Finalized">
 
