@@ -24,10 +24,10 @@ estimates/wave1 -- results of the model estimates from the first wave
 
 - Analytics use case(s): **Population-Level Estimation**
 - Study type: **Clinical Application**
-- Study start date: **May 27, 2020 **
+- Study start date: **May 27, 2020**
 - Study end date: **Ongoing**
 - Protocol: **[Study of the Spread of COVID-19 in Saint Petersburg Protocol in English](https://eusp.org/sites/default/files/inline-files/EU_SG-Russian-Covid-Serosurvey-Protocol-CDRU-001_en.pdf)**
-- Publications: **-**
+- Publications: **—**
 
 ## Licence
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /> 
