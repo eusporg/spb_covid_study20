@@ -10,24 +10,27 @@ library(Hmisc)
 library(tableone)
 library(kableExtra)
 library(labelled)
+library(glm)
+library(sandwich)
+library(lmtest)
 
 setwd("~")
 
 # Load phone survey data
 # created by code/prepare_phone_survey_data/prepare_phone_survey_data.r
-load("phone_survey_data.rdata")
+load("data/phone_survey/phone_survey_data.rdata")
 
 # Load paper survey data from this study
-load("paper_survey_data_matched_to_phone_survey_ids.rdata")
+load("data/paper_survey/paper_survey_data_matched_to_phone_survey_ids.rdata")
 
 # Load Sugentech results, created by extraneous code
-load("test_A_results_matched_to_phone_survey_ids.rdata")
+load("data/test_results/test_A/test_A_results_matched_to_phone_survey_ids.rdata")
 
 # Load Abbott results, created by extraneous code
-load("test_B_results_matched_to_phone_survey_ids.rdata")
+load("data/test_results/test_B/test_B_results_matched_to_phone_survey_ids.rdata")
 
 # Load Genetico results, created by extraneous code
-load("test_C_results_matched_to_phone_survey_ids.rdata")
+load("data/test_results/test_C/test_C_results_matched_to_phone_survey_ids.rdata")
 
 # Convert Genetico quantitative test to qualitative one
 test_C_results_matched_to_phone_survey_ids[IgA_or_G_or_M_testC >= 1, IgA_or_G_or_M_testC := 1]
@@ -177,11 +180,29 @@ papersurvey_regressors <- "+smoking + consumes_alcohol + chronic + allergy + col
 
 ## Log-linear models
 
-#CMIA
-out.basic.IgG_testB <- glm(formula = as.formula(paste0("IgG_testB ~ ", basic_regressors, papersurvey_regressors)), data = serosurvey_data, amily=poisson(link="log"))
+# CMIA
+out.basic.IgG_testB <- glm(formula = as.formula(paste0("IgG_testB ~ ", basic_regressors, papersurvey_regressors)), data = serosurvey_data, family = poisson(link="log"))
 
-#ELISA
-out.basic.IgA_or_G_or_M_testC <- glm(formula = as.formula(paste0("IgA_or_G_or_M_testC ~ ", basic_regressors,papersurvey_regressors)), data = serosurvey_data, amily=poisson(link="log"))
+# ELISA
+out.basic.IgA_or_G_or_M_testC <- glm(formula = as.formula(paste0("IgA_or_G_or_M_testC ~ ", basic_regressors,papersurvey_regressors)), data = serosurvey_data, family = poisson(link="log"))
+
+# Huber-Eicker-White-adjust variance-covariance-estimator
+vcov_sandwich_out.basic.IgG_testB <- sandwich(out.basic.IgG_testB, type = "HC1")
+vcov_sandwich_out.basic.IgA_or_G_or_M_testC <- sandwich(out.basic.IgA_or_G_or_M_testC, type = "HC1")
+
+# Compare the results with and without the Huber-Eicker-White adjusted variance-covariance-matrix
+## IgG test B, without adjustment
+coefci(out.basic.IgG_testB)
+
+## IgG test B, with adjustment
+coefci(out.basic.IgG_testB, vcov = vcov_sandwich_out.basic.IgG_testB)
+
+## IgA/G/M test C, without adjustment
+coefci(out.basic.IgA_or_G_or_M_testC)
+
+## IgA/G/M test C, without adjustment
+coefci(out.basic.IgA_or_G_or_M_testC, vcov = vcov_sandwich_out.basic.IgA_or_G_or_M_testC)
+
 
 # Labelling variables for output table
 Hmisc::label(serosurvey_data$allergy) <- "Past history of allergies"
@@ -198,15 +219,13 @@ Hmisc::label(serosurvey_data$washing_hands_more) <- "Respondent started to wash 
 Hmisc::label(serosurvey_data$selftested_covid) <-"History of COVID-19 testing"
 Hmisc::label(serosurvey_data$travelled_abroad) <-"Respondent travelled abroad in the last 3 months"
 
-#Printing and binding crude and adjusted prevalence ratio from loglinear models
+# Printing and binding crude and adjusted prevalence ratio from loglinear models
+print_CMIA_PR_table <- printCrudeAndAdjustedModel(out.basic.IgG_testB,digits = 2,add_references = TRUE, sprintf_ci_str = "(%s-%s)", reference_zero_effect=1)
 
-print_CMIA_PR_table<-printCrudeAndAdjustedModel(out.basic.IgG_testB,digits = 2,add_references = TRUE, sprintf_ci_str = "(%s-%s)", reference_zero_effect=1)
+print_ELISA_PR_table <- printCrudeAndAdjustedModel(out.basic.IgA_or_G_or_M_testC, digits = 2, add_references = TRUE, sprintf_ci_str = "(%s-%s)", reference_zero_effect=1)
 
-print_ELISA_PR_table<<-printCrudeAndAdjustedModel(out.basic.IgA_or_G_or_M_testC,digits = 2, add_references = TRUE,sprintf_ci_str = "(%s-%s)",reference_zero_effect=1)
-
-#Print LaTex table for prevalence ratios
+# Print LaTex table for prevalence ratios
 xtable(cbind("CMIA" = print_CMIA_PR_table, "ELISA" = print_ELISA_PR_table))
-
 
 
 ## Summary statistics table
@@ -236,4 +255,3 @@ summary_statistics_xtable<-xtable(print(CreateTableOne(data = serosurvey_data, v
       varLabels = TRUE,dropEqual = TRUE, test = FALSE,printToggle = FALSE,showAllLevels = TRUE))
 
 print.xtable(summary_statistics_xtable, sanitize.colnames.function=function(x)gsub("\\."," ",x), sanitize.rownames.function=function(x)gsub("\\."," ",x))
-
