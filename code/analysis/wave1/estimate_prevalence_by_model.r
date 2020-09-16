@@ -198,11 +198,11 @@ sensitivity_igm_sugentech <- 0.9080
 specificity_igm_sugentech <- 0.9818
 
 ## Abbott: https://www.fda.gov/medical-devices/emergency-situations-medical-devices/eua-authorized-serology-test-performance
-sensitivity_igg_abbott <- 1
+sensitivity_igg_abbott <- 0.939
 specificity_igg_abbott <- 0.996
 
 ## Genetico CoronaPass: https://pass.genetico.ru
-sensitivity_iga_g_m_genetico <- 0.96
+sensitivity_iga_g_m_genetico <- 0.987
 specificity_iga_g_m_genetico <- 1
 
 ######## Create an object with prevalence results from different regression models
@@ -239,7 +239,7 @@ for(scenario in regression_scenarios) {
 				## testB OR testC
 				if( serotest == "testB_or_testC") {
 	
-					test_sensitivity <- 0.96
+					test_sensitivity <- 0.987
 					test_specificity <- 1
 	
 				}

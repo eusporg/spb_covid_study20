@@ -11,11 +11,11 @@ setwd("~")
 # Load the per-group prevalence computed by estimate_prevalence_by_variable.r
 load("estimates/wave1/prevalence_by_variable_level.rdata")
 
-# Prevalence lower bounds that cross zero to zer
+# Prevalence lower bounds that cross zero to zero
 prevalence_by_variable_level[lowerbound < 0, lowerbound := 0 ]
 
 # Keep only univariate prevalence from Abbott test
-prevalence_by_district <- prevalence_by_variable_level[ prevalence_type == "univariate" & serotest == "IgG_testB" & variable == "district"]
+prevalence_by_district <- prevalence_by_variable_level[ prevalence_type == "univariate" & serotest == "IgG_testB" & variable == "district" & surveyweight == "no"]
 setnames(prevalence_by_district, "variable_level", "district")
 
 # Load the district boundaries shapefile

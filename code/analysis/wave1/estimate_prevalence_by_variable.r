@@ -186,7 +186,7 @@ sensitivity_igg_abbott <- 1
 specificity_igg_abbott <- 0.996
 
 ## Genetico CoronaPass: https://pass.genetico.ru
-sensitivity_iga_g_m_genetico <- 0.96
+sensitivity_iga_g_m_genetico <- 0.987
 specificity_iga_g_m_genetico <- 1
 
 # Specify which prevalences to estimate
@@ -220,7 +220,7 @@ for(scenario in regression_scenarios) {
 				## testB OR testC
 				if( serotest == "testB_or_testC") {
 	
-					test_sensitivity <- 0.96
+					test_sensitivity <- 0.987
 					test_specificity <- 1
 	
 				}
