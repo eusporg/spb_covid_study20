@@ -198,7 +198,7 @@ sensitivity_igm_sugentech <- 0.9080
 specificity_igm_sugentech <- 0.9818
 
 ## Abbott: https://www.fda.gov/medical-devices/emergency-situations-medical-devices/eua-authorized-serology-test-performance
-sensitivity_igg_abbott <- 0.939
+sensitivity_igg_abbott <- 1
 specificity_igg_abbott <- 0.996
 
 ## Genetico CoronaPass: https://pass.genetico.ru
