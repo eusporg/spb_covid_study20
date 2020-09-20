@@ -14,7 +14,7 @@ prevalence_by_variable_level[serotest == "IgA_or_G_or_M_testC", serotest := "ELI
 prevalence_by_variable_level[serotest == "IgG_testB", serotest := "CMIA"]
 
 # Keep only univariate prevalence for interview week
-prevalence_by_interview_week <- prevalence_by_variable_level[ prevalence_type == "univariate" & variable == "interview_week"]
+prevalence_by_interview_week <- prevalence_by_variable_level[ prevalence_type == "univariate" & variable == "interview_week" & surveyweight == "no"]
 setnames(prevalence_by_interview_week, "variable_level", "week")
 
 prevalence_by_interview_week[, week := as.numeric(week)]
@@ -26,7 +26,7 @@ prevalence_by_interview_week[week == 25, week_label := "June 15-21"]
 prevalence_by_interview_week[week == 26, week_label := "June 22-28"]
 
 # Keep only naive prevalence for draw sample week
-prevalence_by_draw_sample_week <- prevalence_by_variable_level[ prevalence_type == "naive" & variable == "draw_week"]
+prevalence_by_draw_sample_week <- prevalence_by_variable_level[ prevalence_type == "naive" & variable == "draw_week" & surveyweight == "no"]
 setnames(prevalence_by_draw_sample_week, "variable_level", "week")
 
 prevalence_by_draw_sample_week[, week := as.numeric(week)]
@@ -36,7 +36,6 @@ prevalence_by_draw_sample_week[week == 23, week_label := "June 1-7"]
 prevalence_by_draw_sample_week[week == 24, week_label := "June 8-14"]
 prevalence_by_draw_sample_week[week == 25, week_label := "June 15-21"]
 prevalence_by_draw_sample_week[week == 26, week_label := "June 22-28"]
-
 
 ## Plot by interview week
 prevalence_by_interview_week_plot <- ggplot(prevalence_by_interview_week, aes(x = week, y = pointest, color = serotest)) +
@@ -53,8 +52,6 @@ prevalence_by_interview_week_plot <- ggplot(prevalence_by_interview_week, aes(x 
 
 ggsave(prevalence_by_interview_week_plot, file = "media/prevalence_by_interview_week_plot.pdf")
 
-
-
 ## Plot by draw sample week
 prevalence_by_draw_sample_date_plot <- ggplot(prevalence_by_draw_sample_week, aes(x = week, y = pointest, color = serotest)) +
 											geom_point(size = 2, position = position_dodge(width=0.5)) +
@@ -69,4 +66,3 @@ prevalence_by_draw_sample_date_plot <- ggplot(prevalence_by_draw_sample_week, ae
 											theme(panel.grid.minor = element_blank(), axis.text.y = element_text(size = 12), text = element_text(size = 15), legend.position = "bottom")
 
 ggsave(prevalence_by_draw_sample_date_plot, file = "media/prevalence_by_draw_sample_date_plot.pdf")
-
