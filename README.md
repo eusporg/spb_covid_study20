@@ -18,6 +18,13 @@ code/analysis/helper_functions -- auxiliary functions
 code/analysis/preliminary -- analysis at the onset of the study
 code/analysis/wave1 -- analysis of the data from the first wave
 estimates/wave1 -- results of the model estimates from the first wave
+validation_of_covid_test/data -- data for validation of assays' perfomance study:
+validation_of_covid_test/data/full_dataset.rda -- cross-validation sample
+validation_of_covid_test/data/full_*test name*.rda -- full-validation sample for *test name*
+validation_of_covid_test/data/test_nab.rda -- data with neutralization test results
+validation_of_covid_test/functions_for_se_sp.R -- auxiliary functions for assays' perfomance evaluation 
+validation_of_covid_test/se_sp_roc_calculation.R -- evaluation of assays' perfomance 
+validation_of_covid_test/nab_analysis.R -- analysis of the data with neutralization test results
 ```
 
 <img src="https://img.shields.io/badge/Study%20Status-Design%20Finalized-brightgreen.svg" alt="Study Status: Design Finalized">
@@ -27,6 +34,7 @@ estimates/wave1 -- results of the model estimates from the first wave
 - Study start date: **May 27, 2020**
 - Study end date: **Ongoing**
 - Protocol: **[Study of the Spread of COVID-19 in Saint Petersburg Protocol in English](https://eusp.org/sites/default/files/inline-files/EU_SG-Russian-Covid-Serosurvey-Protocol-CDRU-001_en.pdf)**
+- Preprints: **—**
 - Publications: **—**
 
 ## Licence
