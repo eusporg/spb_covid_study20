@@ -34,7 +34,7 @@ validation_of_covid_test/nab_analysis.R -- analysis of the data with neutralizat
 - Study start date: **May 27, 2020**
 - Study end date: **Ongoing**
 - Protocol: **[Study of the Spread of COVID-19 in Saint Petersburg Protocol in English](https://eusp.org/sites/default/files/inline-files/EU_SG-Russian-Covid-Serosurvey-Protocol-CDRU-001_en.pdf)**
-- Preprints: **—**
+- Preprints: [Seroprevalence of SARS-CoV-2 antibodies in Saint Petersburg, Russia: a population-based study](https://www.medrxiv.org/content/10.1101/2020.11.02.20221309v1), [Evaluation of the performance of SARS-CoV-2 antibody assays for the longitudinal population-based study of COVID-19 spread in St. Petersburg, Russia](https://www.medrxiv.org/content/10.1101/2021.04.05.21254712v1)
 - Publications: **—**
 
 ## Licence
