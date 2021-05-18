@@ -106,10 +106,10 @@ se_sp <- se_sp %>%
   
 se_sp_full <- se_sp %>%
   filter(dataset == "full")  %>%
-  mutate(N_se = c(65, 65, 61, 92, 93),
-         N_sp = c(60, 60, 0,  60, 48)) %>%
+  mutate(N_sp = c(65, 65, 0, 92, 93),
+         N_se = c(60, 60, 61,  60, 48)) %>%
   dplyr::select(-dataset) %>%
-  relocate(test2, N_se, sensitivity, N_sp, specificity) 
+  relocate(test2, N_se, sensitivity, N_sp, specificity)
 
 se_sp_cross <- se_sp %>%
   filter(dataset == "cross") %>%
