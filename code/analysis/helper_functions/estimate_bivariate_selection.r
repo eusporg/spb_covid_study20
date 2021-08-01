@@ -1,6 +1,8 @@
 ############################
 # A function that estimates the
 # bivariate probit model and outputs the results
+# We require a specific version of GJRM:
+# remotes::install_version("GJRM", "0.2-2")
 library(GJRM)
 
 estimate_bivariate_selection <- function(data = serosurvey_data, subset_condition = NULL, selection_type = "2step", agreementvar = "agreed", clinicvisitvar = "agreed_and_tested", outcomevar = "IgG_testB", regressors = "age + male", semiparametric_age = T, exclusion_restriction_agreement = NULL, exclusion_restriction_clinicvisit = NULL, error_distribution = "N", surveyweightsvar = NULL) {

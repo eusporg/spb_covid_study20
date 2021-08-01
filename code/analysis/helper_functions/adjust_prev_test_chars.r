@@ -1,6 +1,8 @@
 # Function that adjusts the prevalence
 # estimates for test sensitivity and specificity
 # in classical way
+# We require a specific version of GJRM:
+# remotes::install_version("GJRM", "0.2-2")
 library(GJRM)
 
 adjust_prev_test_chars <- function(prev_object, sensitivity = 1, specificity = 1) {

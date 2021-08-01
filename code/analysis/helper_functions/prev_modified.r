@@ -2,11 +2,11 @@
 # of GJRM::prev that 
 # fixes selected bugs with 
 # survey weighting and 
-# subset prevalence compuations
+# subset prevalence computations
 
 prev_modified <- function(x, sw = NULL, type = "joint", ind = NULL, delta = FALSE, n.sim = 100, prob.lev = 0.05, 
                       hd.plot = FALSE, main = "Histogram and Kernel Density of Simulated Prevalences", 
-       xlab="Simulated Prevalences") {
+       xlab="Simulated Prevalences", ...) {
 
 
 if(x$Cont == "YES") stop("This function is not suitable for bivariate models with continuous/discrete margins.")
@@ -82,13 +82,14 @@ if(type != "naive"){
 #######
 
 wm <- weighted.mean(probm(etasg, x$margins[2])$pr, w=sw)
+#wm <- weighted.mean(probm(etasg, x$margins[2], min.dn = x$VC$min.dn, min.pr = x$VC$min.pr, max.pr = x$VC$max.pr)$pr, w=sw)
 
 #######
 
 if(delta == TRUE){
 
 core <- matrixStats::colWeightedMeans( c( probm(etasg, x$margins[2], only.pr = FALSE)$d.n )*Xsg, w = sw, na.rm = FALSE) 
-
+#core <- colWeightedMeans( c( probm(etasg, x$margins[2], only.pr = FALSE, min.dn = x$VC$min.dn, min.pr = x$VC$min.pr, max.pr = x$VC$max.pr)$d.n )*Xsg, w = sw, na.rm = FALSE)
 
 if(x$Model == "BSS" && type == "joint"){
 
@@ -154,7 +155,8 @@ if(delta == FALSE){
   
   
  
-  ps  <- probm( Xsg%*%t(bs) , x$margins[2])$pr 
+  ps  <- probm( Xsg%*%t(bs) , x$margins[2])$pr
+  #ps <- probm( Xsg%*%t(bs) , x$margins[2], min.dn = x$VC$min.dn, min.pr = x$VC$min.pr, max.pr = x$VC$max.pr)$pr 
   wms <- colWeightedMeans( ps, w = sw, na.rm = FALSE)
   bb <- quantile(wms, probs = c(prob.lev/2,1-prob.lev/2), na.rm=TRUE )
 

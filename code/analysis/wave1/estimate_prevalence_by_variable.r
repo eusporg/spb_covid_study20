@@ -4,135 +4,18 @@ library(stringr)
 library(lubridate)
 library(stats)
 library(matrixStats)
+# We require a specific version of GJRM:
+# remotes::install_version("GJRM", "0.2-2")
 library(GJRM)
 
-setwd("~")
+# Declare working directory beforehand in an environment variable
+# SPB_COVID_STUDY_PATH = "path_to_your_folder"
+# with the aid of file.edit(file.path("~", ".Renviron")); file.rename(file.path("~", ".Renviron.R"), file.path("~", ".Renviron"))
+# Restart R session for the changes to make effect
+setwd(Sys.getenv('SPB_COVID_STUDY_PATH'))
 
-# Load phone survey data
-# created by code/prepare_phone_survey_data/prepare_phone_survey_data.r
-load("data/phone_survey/phone_survey_data.rdata")
-
-# Load Sugentech results, created by extraneous code
-load("data/test_results/test_A/test_A_results_matched_to_phone_survey_ids.rdata")
-
-# Load Abbott results, created by extraneous code
-load("data/test_results/test_B/test_B_results_matched_to_phone_survey_ids.rdata")
-
-# Load Genetico results, created by extraneous code
-load("data/test_results/test_C/test_C_results_matched_to_phone_survey_ids.rdata")
-
-# Convert Genetico quantitative test to qualitative one
-test_C_results_matched_to_phone_survey_ids[IgA_or_G_or_M_testC >= 1, IgA_or_G_or_M_testC := 1]
-test_C_results_matched_to_phone_survey_ids[IgA_or_G_or_M_testC < 1, IgA_or_G_or_M_testC := 0]
-
-# Load a modified prevalence computation function
-# that is based on GJRM::prev
-source("code/analysis/helper_functions/prev_modified.r")
-
-# Load a function that estimates the
-# bivariate probit model and outputs the results
-source("code/analysis/helper_functions/estimate_bivariate_selection.r")
-
-# Load a function that adjusts the prevalence
-# estimates for sensitivity and specificity
-# in classical way
-source("code/analysis/helper_functions/adjust_prev_test_chars.r")
-
-# Load raking weights fit for phone survey data
-# produced by estimate_raking_weights_phone_survey.r
-load("estimates/phone_survey_raking_fit.rdata")
-raking_weights <- data.table(ID = names(phone_survey_raking_fit$weightvec), raking_weight = phone_survey_raking_fit$weightvec)
-
-############################
-# Prepare data for model fitting
-
-# Test results data contains all individuals that were contacted as of this date 
-initial_phone_call_last_date <- "2020-06-24"
-
-# Keep individuals that have been called up to that date
-# in a separate object
-serosurvey_data <- phone_survey_data[interview_date <= initial_phone_call_last_date]
-
-# Remove individuals from Lomonosovskiy and Vsevolozhskiy district as they are outside Saint Petersburg
-serosurvey_data <- serosurvey_data[!(district %in% c("Lomonosovskiy District", "Vsevolozhskiy District"))]
-# Remove individuals from districts in St. Petersburg that we have omitted from the study
-serosurvey_data <- serosurvey_data[!(district %in% c("Kurortniy District", "Petrodvortsoviy District", "Pushkinskiy District", "Kolpinskiy District", "Kronshtadtskiy District", "Krasnoselskiy District"))]
-# Remove individuals with missing districts
-serosurvey_data <- serosurvey_data[!is.na(district)]
-serosurvey_data[, district := droplevels(district)]
-
-# Add test results
-## Test A
-serosurvey_data <- merge(serosurvey_data, test_A_results_matched_to_phone_survey_ids[, c("ID", "IgM_testA", "IgG_testA")], by = "ID", all.x = T, all.y = F)
-
-## Test B
-serosurvey_data <- merge(serosurvey_data, test_B_results_matched_to_phone_survey_ids[, c("ID", "IgG_testB", "draw_sample_date")], by = "ID", all.x = T, all.y = F)
-
-## Test C
-serosurvey_data <- merge(serosurvey_data, test_C_results_matched_to_phone_survey_ids[, c("ID", "IgA_or_G_or_M_testC")], by = "ID", all.x = T, all.y = F)
-
-# Devise agreed and tested variable
-serosurvey_data[, agreed_and_tested := 0]
-serosurvey_data[agreed == 1 & !is.na(IgG_testB), agreed_and_tested := 1]
-
-# Define age groups
-serosurvey_data[, agegroup := NA_character_]
-serosurvey_data[age < 35, agegroup := "18-34"]
-serosurvey_data[age >= 35 & age < 50, agegroup := "35-49"]
-serosurvey_data[age >= 50 & age < 65, agegroup := "50-64"]
-serosurvey_data[age >= 65, agegroup := "65+"]
-serosurvey_data[, agegroup := as.factor(agegroup)]
-
-# Higher education dummy
-serosurvey_data[, highereduc := NA_real_]
-serosurvey_data[!is.na(education_level), highereduc := 0]
-serosurvey_data[education_level %in% c("Higher education"), highereduc := 1]
-
-# Good health dummy
-serosurvey_data[, goodhealth := NA_real_]
-serosurvey_data[!is.na(health_level), goodhealth := 0]
-serosurvey_data[health_level %in% c("Good", "Very good"), goodhealth := 1]
-
-# Was sick dummy
-serosurvey_data[, was_sick := NA_real_]
-serosurvey_data[times_sick == 0 , was_sick := 0]
-serosurvey_data[times_sick > 0 , was_sick := 1]
-
-# Wears mask dummy
-serosurvey_data[, wears_mask := NA_real_]
-serosurvey_data[!is.na(street_used_mask) & !is.na(left_house), wears_mask := 0]
-serosurvey_data[street_used_mask == 1 | left_house == 0, wears_mask := 1]
-
-# Mark interviewers that conducted less than ten interviews
-interviews_per_interviewee <- serosurvey_data[, list(interviews = .N), by = "interviewer"]
-serosurvey_data[, rare_interviewer := 0]
-serosurvey_data[ interviewer %in% interviews_per_interviewee[ interviews < 10]$interviewer, rare_interviewer := 1 ]
-
-# Higher income dummy
-serosurvey_data[, higherincome := NA_real_]
-serosurvey_data[!is.na(income_level), higherincome := 1]
-serosurvey_data[income_level %in% c("Can't buy appliances", "Can't buy clothes", "Can't buy food"), higherincome := 0]
-
-# Policy proponent
-serosurvey_data[, policy := NA_character_]
-serosurvey_data[!is.na(stricter_policy_proponent) & !is.na(lenient_policy_proponent), policy := "no"]
-serosurvey_data[lenient_policy_proponent==1, policy := "lenient"]
-serosurvey_data[stricter_policy_proponent==1, policy := "stricter"]
-serosurvey_data[, policy := as.factor(policy)]
-
-# Visits of places
-serosurvey_data[, visited := NA_real_]
-serosurvey_data[!is.na(visited_work ) & !is.na(visited_transport) & !is.na(visited_pharmacy) & !is.na(visited_market_or_shop) & !is.na(visited_facilities) , visited := 0]
-serosurvey_data[visited_work==1 | visited_transport==1 | visited_pharmacy==1 | visited_market_or_shop==1 | visited_facilities==1 , visited := 1]
-
-# Interview week of year
-serosurvey_data[, interview_week := as.factor(isoweek(interview_date))]
-
-# Sample draw week of year 
-serosurvey_data[, draw_week := as.factor(isoweek(draw_sample_date))]
-
-# Add raking weights
-serosurvey_data <- merge(serosurvey_data, raking_weights, by = "ID", all.x = T, all.y = F)
+# Load and prepare the serosurvey data for model fit
+source("code/analysis/wave1/create_serosurvey_data_for_model_fit.r")
 
 ############################
 # Parametric sample selection bivariate probit fit
@@ -171,6 +54,13 @@ for(scenario in regression_scenarios) {
 # Prevalence estimation by variable
 
 # Set test characteristics
+# NB: in the first wave 1 study we used
+# the values reported by the manufacturers (https://www.fda.gov/medical-devices/emergency-situations-medical-devices/eua-authorized-serology-test-performance):
+#sensitivity_igg_abbott <- 1
+#specificity_igg_abbott <- 0.996
+#sensitivity_iga_g_m_genetico <- 0.987
+#specificity_iga_g_m_genetico <- 1
+
 ## Sugentech: http://sugentech.com/images/popup/Clinical%20Evaluation%20Study%20Report_SGTi-flex%20COVID-19%20IgM_testA%20&%20IgG_testA_200515.pdf
 sensitivity_igg_m_sugentech <- 0.9448
 specificity_igg_m_sugentech <- 0.9818
@@ -181,12 +71,12 @@ specificity_igg_sugentech <- 1
 sensitivity_igm_sugentech <- 0.9080
 specificity_igm_sugentech <- 0.9818
 
-## Abbott: https://www.fda.gov/medical-devices/emergency-situations-medical-devices/eua-authorized-serology-test-performance
-sensitivity_igg_abbott <- 1
-specificity_igg_abbott <- 0.996
+## Abbott (after own validation)
+sensitivity_igg_abbott <- 0.677
+specificity_igg_abbott <- 1
 
-## Genetico CoronaPass: https://pass.genetico.ru
-sensitivity_iga_g_m_genetico <- 0.987
+## Genetico CoronaPass (after own validation)
+sensitivity_iga_g_m_genetico <- 0.920
 specificity_iga_g_m_genetico <- 1
 
 # Specify which prevalences to estimate
@@ -224,7 +114,7 @@ for(scenario in regression_scenarios) {
 					test_specificity <- 1
 	
 				}
-				## testB OR testC
+				## testB AND testC
 				if( serotest == "testB_and_testC") {
 	
 					test_sensitivity <- 1
@@ -267,27 +157,31 @@ for(scenario in regression_scenarios) {
 						group_survey_weights_outcome <- rep(1, sum(var_indicators_outcome))
 						group_survey_weights_selection <- rep(1, sum(var_indicators_selection))
 
-
 					}
 
 					# Count number 
 					n_var_indicators_outcome <- sum(var_indicators_outcome)
 					n_var_indicators_selection <- sum(var_indicators_selection)
 	
-					# Naive prevalence by group
-					var_prev_naive <- adjust_prev_test_chars(prev_modified(model$fit, ind = var_indicators_outcome, type = "naive", sw = group_survey_weights_outcome, delta = T), sensitivity = test_sensitivity, specificity = test_specificity)
-					# Univariate prevalence by group
-					var_prev_univariate <- adjust_prev_test_chars(prev_modified(model$fit, ind = var_indicators_selection, type = "univariate", sw = group_survey_weights_selection, delta = T), sensitivity = test_sensitivity, specificity = test_specificity)
-					# Joint prevalence by group
-					var_prev_joint <- adjust_prev_test_chars(prev_modified(model$fit, ind = var_indicators_selection, type = "joint", sw = group_survey_weights_selection, delta = T), sensitivity = test_sensitivity, specificity = test_specificity)
+					# Store the adjusted and unadjusted versions alongside
+					for( adjusted in c(T, F) ) {
+
+						# Naive prevalence by group
+						var_prev_naive <- adjust_prev_test_chars(prev_modified(model$fit, ind = var_indicators_outcome, type = "naive", sw = group_survey_weights_outcome, delta = T), sensitivity = ifelse(adjusted, test_sensitivity, 1), specificity = ifelse(adjusted, test_specificity, 1))
+						# Univariate prevalence by group
+						var_prev_univariate <- adjust_prev_test_chars(prev_modified(model$fit, ind = var_indicators_selection, type = "univariate", sw = group_survey_weights_selection, delta = T), sensitivity = ifelse(adjusted, test_sensitivity, 1), specificity = ifelse(adjusted, test_specificity, 1))
+						# Joint prevalence by group
+						var_prev_joint <- adjust_prev_test_chars(prev_modified(model$fit, ind = var_indicators_selection, type = "joint", sw = group_survey_weights_selection, delta = T), sensitivity = ifelse(adjusted, test_sensitivity, 1), specificity = ifelse(adjusted, test_specificity, 1))
 	
-					# Append to an object
-					## Naive
-					prevalence_by_variable_level <- rbind(prevalence_by_variable_level, data.table(serotest = serotest, prevalence_type = "naive", surveyweight = surveyweight, variable = group_var, variable_level = var, lowerbound = var_prev_naive$res[1], pointest = var_prev_naive$res[2], upperbound = var_prev_naive$res[3], n_selection = n_var_indicators_selection, n_outcome = n_var_indicators_outcome), fill = T)
-					## Univariate
-					prevalence_by_variable_level <- rbind(prevalence_by_variable_level, data.table(serotest = serotest,  prevalence_type = "univariate",  surveyweight = surveyweight, variable = group_var, variable_level = var, lowerbound = var_prev_univariate$res[1], pointest = var_prev_univariate$res[2], upperbound = var_prev_univariate$res[3], n_selection = n_var_indicators_selection, n_outcome = n_var_indicators_outcome), fill = T)
-					## Joint
-					prevalence_by_variable_level <- rbind(prevalence_by_variable_level, data.table(serotest = serotest,  prevalence_type = "joint", surveyweight = surveyweight, variable = group_var, variable_level = var, lowerbound = var_prev_joint$res[1], pointest = var_prev_joint$res[2], upperbound = var_prev_joint$res[3], n_selection = n_var_indicators_selection, n_outcome = n_var_indicators_outcome), fill = T)
+						# Append to an object
+						## Naive
+						prevalence_by_variable_level <- rbind(prevalence_by_variable_level, data.table(serotest = serotest, prevalence_type = "naive", surveyweight = surveyweight, sensitivity = var_prev_naive$sensitivity, specificity = var_prev_naive$specificity, variable = group_var, variable_level = var, lowerbound = var_prev_naive$res[1], pointest = var_prev_naive$res[2], upperbound = var_prev_naive$res[3], n_selection = n_var_indicators_selection, n_outcome = n_var_indicators_outcome), fill = T)
+						## Univariate
+						prevalence_by_variable_level <- rbind(prevalence_by_variable_level, data.table(serotest = serotest,  prevalence_type = "univariate",  surveyweight = surveyweight, sensitivity = var_prev_univariate$sensitivity, specificity = var_prev_univariate$specificity, variable = group_var, variable_level = var, lowerbound = var_prev_univariate$res[1], pointest = var_prev_univariate$res[2], upperbound = var_prev_univariate$res[3], n_selection = n_var_indicators_selection, n_outcome = n_var_indicators_outcome), fill = T)
+						## Joint
+						prevalence_by_variable_level <- rbind(prevalence_by_variable_level, data.table(serotest = serotest,  prevalence_type = "joint",  surveyweight = surveyweight, sensitivity = var_prev_joint$sensitivity, specificity = var_prev_joint$specificity, variable = group_var, variable_level = var, lowerbound = var_prev_joint$res[1], pointest = var_prev_joint$res[2], upperbound = var_prev_joint$res[3], n_selection = n_var_indicators_selection, n_outcome = n_var_indicators_outcome), fill = T)
+
+					}
 	
 				}
 
@@ -321,18 +215,22 @@ naive_prevalence_by_draw_sample_week_adjusted <- data.table()
 # Apply test performance adjustments to a manually constructed object with naive prevalences
 for(w in unique(naive_prevalence_by_draw_sample_week_abbott$draw_week)) {
 
-	# Weekly adjusted prevalence
-	abbot_prev <- adjust_prev_test_chars(list(res = unlist(unname(naive_prevalence_by_draw_sample_week_abbott[draw_week == w, c("lowerbound", "pointest", "upperbound")])), prob.lev = 0.05, sim.prev = NA))$res
-	names(abbot_prev) <- c("lowerbound", "pointest", "upperbound")
+	# Weekly adjusted and unadjusted prevalence
+	for( adjusted in c(T, F) ) {
 
-	out_abbott <- data.table(serotest = "IgG_testB", prevalence_type = "naive", surveyweight = "no", variable = "draw_week", variable_level = w, t(abbot_prev), n_outcome = naive_prevalence_by_draw_sample_week_abbott[draw_week == w]$N)
+		abbot_prev <- adjust_prev_test_chars(list(res = unlist(unname(naive_prevalence_by_draw_sample_week_abbott[draw_week == w, c("lowerbound", "pointest", "upperbound")])), prob.lev = 0.05, sim.prev = NA), sensitivity = ifelse(adjusted, sensitivity_igg_abbott, 1), specificity = ifelse(adjusted, specificity_igg_abbott, 1))$res
+		names(abbot_prev) <- c("lowerbound", "pointest", "upperbound")
+	
+		out_abbott <- data.table(serotest = "IgG_testB", prevalence_type = "naive", surveyweight = "no", sensitivity = ifelse(adjusted, sensitivity_igg_abbott, 1), specificity = ifelse(adjusted, specificity_igg_abbott, 1), variable = "draw_week", variable_level = w, t(abbot_prev), n_outcome = naive_prevalence_by_draw_sample_week_abbott[draw_week == w]$N)
+	
+		genetico_prev <- adjust_prev_test_chars(list(res = unlist(unname(naive_prevalence_by_draw_sample_week_genetico[draw_week == w, c("lowerbound", "pointest", "upperbound")])), prob.lev = 0.05, sim.prev = NA), sensitivity = ifelse(adjusted, sensitivity_iga_g_m_genetico, 1), specificity = ifelse(adjusted, specificity_iga_g_m_genetico, 1))$res
+		names(genetico_prev) <- c("lowerbound", "pointest", "upperbound")
+	
+		out_genetico <- data.table(serotest = "IgA_or_G_or_M_testC", prevalence_type = "naive", surveyweight = "no", sensitivity = ifelse(adjusted, sensitivity_iga_g_m_genetico, 1), specificity = ifelse(adjusted, specificity_iga_g_m_genetico, 1), variable = "draw_week", variable_level = w, t(genetico_prev), n_outcome = naive_prevalence_by_draw_sample_week_genetico[draw_week == w]$N)
+	
+		naive_prevalence_by_draw_sample_week_adjusted <- rbind(naive_prevalence_by_draw_sample_week_adjusted, out_abbott, out_genetico)
 
-	genetico_prev <- adjust_prev_test_chars(list(res = unlist(unname(naive_prevalence_by_draw_sample_week_genetico[draw_week == w, c("lowerbound", "pointest", "upperbound")])), prob.lev = 0.05, sim.prev = NA))$res
-	names(genetico_prev) <- c("lowerbound", "pointest", "upperbound")
-
-	out_genetico <- data.table(serotest = "IgA_or_G_or_M_testC", prevalence_type = "naive", surveyweight = "no", variable = "draw_week", variable_level = w, t(genetico_prev), n_outcome = naive_prevalence_by_draw_sample_week_genetico[draw_week == w]$N)
-
-	naive_prevalence_by_draw_sample_week_adjusted <- rbind(naive_prevalence_by_draw_sample_week_adjusted, out_abbott, out_genetico)
+	}
 
 }
 

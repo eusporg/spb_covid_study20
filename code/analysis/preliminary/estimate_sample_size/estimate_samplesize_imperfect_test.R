@@ -1,14 +1,16 @@
 # This code assumes binomial distribution of # of infected
 # individuals and computes sampling errors under perfect
-# and imperfect screening tests.
-# 
-# 1 May 2020, Dmitriy Skougarevskiy, EU SPb
+# and imperfect screening tests
 library(data.table)
 library(ggplot2)
 library(scales)
 library(ggthemes)
 
-setwd("~")
+# Declare working directory beforehand in an environment variable
+# SPB_COVID_STUDY_PATH = "path_to_your_folder"
+# with the aid of file.edit(file.path("~", ".Renviron")); file.rename(file.path("~", ".Renviron.R"), file.path("~", ".Renviron"))
+# Restart R session for the changes to make effect
+setwd(Sys.getenv('SPB_COVID_STUDY_PATH'))
 
 # Load function from 
 # Reiczigel, Földi and Ózsvári (2010) Exact confidence limits for 
@@ -83,4 +85,4 @@ sampling_error_plot <- ggplot(data = sampling_error_estimation, aes(x=n, y=sampl
 								theme(legend.direction ="vertical", legend.position="bottom", legend.margin = margin(t=-0.6, unit = 'cm')) +
 								guides(color=guide_legend(ncol=2,))
 
-ggsave(sampling_error_plot, file = "media/sampling_error_plot.pdf", width = 10, height = 7)
+#ggsave(sampling_error_plot, file = "media/sampling_error_plot.pdf", width = 10, height = 7)

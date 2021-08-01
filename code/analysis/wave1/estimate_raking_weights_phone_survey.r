@@ -4,7 +4,11 @@ library(stringr)
 library(lubridate)
 library(anesrake)
 
-setwd("~")
+# Declare working directory beforehand in an environment variable
+# SPB_COVID_STUDY_PATH = "path_to_your_folder"
+# with the aid of file.edit(file.path("~", ".Renviron")); file.rename(file.path("~", ".Renviron.R"), file.path("~", ".Renviron"))
+# Restart R session for the changes to make effect
+setwd(Sys.getenv('SPB_COVID_STUDY_PATH'))
 
 # Load Сomprehensive monitoring of living
 # conditions 2018 data for Saint Petersburg
@@ -17,10 +21,10 @@ kouzh_2018_data_spb[sex == 2, male := 0]
 kouzh_2018_data_spb <- kouzh_2018_data_spb[ age >= 18 ]
 
 # Load phone survey data from this study
-load("data/phone_survey/phone_survey_data.rdata")
+load("data/wave1/phone_survey/phone_survey_data.rdata")
 
 # Load paper survey data from this study
-load("data/paper_survey/paper_survey_data_matched_to_phone_survey_ids.rdata")
+load("data/wave1/paper_survey/paper_survey_data_matched_to_phone_survey_ids.rdata")
 
 # Test results data contains all individuals that were contacted as of this date 
 initial_phone_call_last_date <- "2020-06-24"
@@ -82,4 +86,4 @@ raking_target <- list( "male" = male_proportions_list, "agegroup" = agegroup_pro
 phone_survey_raking_fit <- anesrake(raking_target, phone_survey_data[, c(raking_variables), with = F], phone_survey_data$ID, cap = 5, choosemethod = "total", type = "pctlim", pctlim = 0.05 )
 
 # Save the object with raking
-save(phone_survey_raking_fit, file = "estimates/phone_survey_raking_fit.rdata", compress = "xz")
+save(phone_survey_raking_fit, file = "estimates/wave1/phone_survey_raking_fit.rdata", compress = "xz")
