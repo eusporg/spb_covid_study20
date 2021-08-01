@@ -16,6 +16,7 @@ user:~$ echo 'SPB_COVID_STUDY_PATH="path_to_cloned_repository"' >> ~/.Renviron
 ```
 
 ## Structure
+![spb_covid_study20_dependencies](https://user-images.githubusercontent.com/3776887/127777583-102d55da-7e4a-4e6d-9223-c0fe5811e93a.png)
 
 We provide an annotated `Makefile` that documents the data analysis in our papers.
 
