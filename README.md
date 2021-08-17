@@ -26,6 +26,8 @@ To build the ‘[Evaluation of the performance of SARS-CoV-2 antibody assays](ht
 
 To build the ‘[COVID-19 pandemic in Saint Petersburg, Russia](https://doi.org/10.1101/2021.07.31.21261428)’ paper run `make pandemic_course_paper`.
 
+To build the ‘Vaccine Effectiveness Against Severe COVID-19 in St. Petersburg, Russia’ paper run `make ve_against_covid_paper`.
+
 Please note that those commands will not produce any publication-ready output files (e.g. tables or figures): the export statements are commented out in the code. Our intention is to make the analysis pipeline transparent to the readers with the aid of `make`.
 
 For convenience, we also briefly describe the repository structure below:
@@ -66,6 +68,10 @@ data/kouzh_2018 -- data from the 2016 round of the Comprehensive Monitoring of L
                    Conditions household survey (available at
                    https://www.gks.ru/free_doc/new_site/KOUZ18/index.html)
 
+data/ve_covid_paper -- depersonified participant-level data on lung injury, oxigen 
+                       saturation, referral to hospital and vaccination status from 
+                       two triage ceters in St. Petersburg
+
 code/analysis/helper_functions -- auxiliary functions
 code/analysis/preliminary -- analysis at the onset of the study
 code/analysis/wave* -- analysis of the data from the waves 1 to 3
@@ -75,6 +81,16 @@ code/analysis/validation_of_covid_tests_paper -- the code required to replicate 
                                                  Journal of Medical Virology paper
 code/analysis/pandemic_course_paper -- the code required to replicate the Course of
                                        COVID-19 pandemic paper
+
+code/analysis/ve_covid_paper/minimum_detectable_ve.r -- minimum detectable odds ratio
+                                                                      for the ve paper
+code/analysis/ve_covid_paper/create_summary_statistics_table.R -- summary statistics 
+                                                                      for the ve dataset
+code/analysis/ve_covid_paper/*_models.R -- results of model estimates for ve
+code/analysis/ve_covid_paper/create_ve_figure_for_age_vac_status.R -- plot for probability 
+                                                                      of referral to hospital
+                                                                      by vaccination status
+                                                                      and age
 
 estimates/wave* -- results of the seroprevalence model estimates from the respective
                    wave: seroprevalence by model and variable level

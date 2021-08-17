@@ -1,11 +1,11 @@
 Imports:
-    data.table (>= 1.13.0),
+    data.table (>= 1.13.2),
     stringi (>= 1.4.4),
     stringr (>= 1.3.1),
     lubridate (>= 1.7.10),
     remotes (>= 2.3.0),
     sandwich (>= 3.0-1),
-    mgcv (>= 1.8-35),
+    mgcv (>= 1.8-36),
     nlme (>= 3.1-152),
     matrixStats (>= 0.59.0),
     GJRM (<= 0.2-2),
@@ -31,7 +31,7 @@ Imports:
     magrittr (>= 2.0.1),
     janitor (>= 2.1.0),
     pander (>= 0.6.4),
-    epiR (>= 2.0.26),
+    epiR (>= 2.0.33),
     pROC (>= 1.17.0.1),
     Greg (>= 1.3.4),
     xtable (>= 1.8-4),
@@ -41,3 +41,4 @@ Imports:
     labelled (>= 2.8.0),
     lmtest (>= 0.9-38),
     Publish (>= 2020.12.23)
+    gratia (>= 0.6.0)

@@ -256,3 +256,20 @@ code/analysis/validation_of_covid_tests_paper/functions_for_se_sp.R:
 validation_of_covid_tests_paper: data/validation_of_covid_tests/full_abbott.rda data/validation_of_covid_tests/full_dataset.rda data/validation_of_covid_tests/full_genetico.rda data/validation_of_covid_tests/full_roche.rda data/validation_of_covid_tests/full_vector.rda data/validation_of_covid_tests/test_nab.rda code/analysis/validation_of_covid_tests_paper/functions_for_se_sp.R DEPENDENCIES
 	Rscript code/analysis/validation_of_covid_tests_paper/se_sp_roc_calculation.R
 	Rscript code/analysis/validation_of_covid_tests_paper/nab_analysis.R
+
+# Dataset for paper on vaccine effectiveness against referral to hospital and severe lung injury
+data/ve_covid_paper/trc_dt.Rdata:
+# Do nothing, the file is created outside the repo
+	noop
+
+# Paper on vaccine effectiveness against referral to hospital and severe lung injury
+ve_against_covid_paper: data/ve_covid_paper/trc_dt.Rdata
+	Rscript code/analysis/ve_covid_paper/minimum_detectable_ve.r 
+	Rscript code/analysis/ve_covid_paper/create_summary_statistics_table.R
+	Rscript code/analysis/ve_covid_paper/hospitalization_models.R 
+	Rscript code/analysis/ve_covid_paper/lung_injury_models.R 
+	Rscript code/analysis/ve_covid_paper/ox_saturation_models.R 
+	Rscript code/analysis/ve_covid_paper/sex_age_trc_models.R
+	Rscript code/analysis/ve_covid_paper/vac_status_models.R
+	Rscript code/analysis/ve_covid_paper/56days_models.R
+	Rscript code/analysis/ve_covid_paper/create_ve_figure_for_age_vac_status.R
