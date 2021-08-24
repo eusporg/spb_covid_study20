@@ -26,7 +26,7 @@ To build the ‘[Evaluation of the performance of SARS-CoV-2 antibody assays](ht
 
 To build the ‘[COVID-19 pandemic in Saint Petersburg, Russia](https://doi.org/10.1101/2021.07.31.21261428)’ paper run `make pandemic_course_paper`.
 
-To build the ‘Vaccine Effectiveness Against Severe COVID-19 in St. Petersburg, Russia’ paper run `make ve_against_covid_paper`.
+To build the ‘[Vaccine Effectiveness Against Severe COVID-19 in St. Petersburg, Russia](https://doi.org/10.1101/2021.08.18.21262065)’ paper run `make ve_against_covid_paper`.
 
 Please note that those commands will not produce any publication-ready output files (e.g. tables or figures): the export statements are commented out in the code. Our intention is to make the analysis pipeline transparent to the readers with the aid of `make`.
 
@@ -123,7 +123,7 @@ The code for the Course of COVID-19 pandemic paper also relies on the data from 
 - Study start date: **May 27, 2020**
 - Study end date: **Ongoing**
 - Protocol: **[Study of the Spread of COVID-19 in Saint Petersburg Protocol in English](https://eusp.org/sites/default/files/inline-files/EU_SG-Russian-Covid-Serosurvey-Protocol-CDRU-001_en.pdf)**
-- Preprints: **[COVID-19 pandemic in Saint Petersburg, Russia](https://doi.org/10.1101/2021.07.31.21261428)**
+- Preprints: **[COVID-19 pandemic in Saint Petersburg, Russia](https://doi.org/10.1101/2021.07.31.21261428)**, **[Vaccine Effectiveness Against Severe COVID-19 in St. Petersburg, Russia](https://doi.org/10.1101/2021.08.18.21262065)**
 - Publications: **[Seroprevalence of SARS-CoV-2 antibodies in Saint Petersburg, Russia: a population-based study](https://doi.org/10.1038/s41598-021-92206-y), [Evaluation of the performance of SARS-CoV-2 antibody assays for the longitudinal population-based study of COVID-19 spread in St. Petersburg, Russia](https://doi.org/10.1002/jmv.27126)**
 
 ## Licence
