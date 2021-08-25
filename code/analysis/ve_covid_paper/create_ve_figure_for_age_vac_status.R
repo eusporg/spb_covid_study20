@@ -72,3 +72,36 @@ figure_1
 # pdf("figure_1.pdf", width = 10, height = 5) 
 # figure_1
 # dev.off()
+
+# Overlay plots
+
+# Add color palette 
+cbPalette <- c("#009E73","#E69F00")
+
+one_plot <- ggplot() + 
+	geom_line(data = age_status_ve_data, aes(x=age, y=hospitalization, color = vaccination, linetype = vaccination), size = 1)  + 
+	geom_ribbon(data = age_status_ve_data[age_status_ve_data$.idx == 1,], 
+							aes(x= age, ymin = CI_lower, ymax = CI_upper), 
+							alpha = 0.2, 
+							fill= "#009E73") +
+	geom_ribbon(data = age_status_ve_data[age_status_ve_data$.idx == 2,], 
+							aes(x= age, ymin = CI_lower, ymax = CI_upper), 
+							alpha = 0.2, 
+							fill= "#E69F00") +
+	expand_limits(x = c(18, 96), y = c(0, 0.6)) +
+	theme_bw() +
+	scale_x_continuous(name = "Age (years)", breaks = seq(20, 90, by = 10), 1) +
+	scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = ""),
+										 name = "Probability of hospitalization (%)", 
+										 breaks = seq(0.0, 0.6, by = 0.1),1)+
+	scale_colour_manual(values = cbPalette)+
+	theme(legend.justification = c(0.2, 1), legend.position = c(0.2, 0.9),
+				axis.text.x = element_text(angle = 0, hjust = 0.5))+
+	labs(color = "", linetype = "")
+
+one_plot
+
+# Save new plot in a file
+# pdf("one_plot.pdf", width = 10, height = 5) 
+# one_plot
+# dev.off()
