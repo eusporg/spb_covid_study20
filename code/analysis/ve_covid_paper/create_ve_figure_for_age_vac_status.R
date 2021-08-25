@@ -38,7 +38,7 @@ h_model_gam2 <- mgcv::gam(hospitalization ~ s(age, by = vaccination) +
 age_status_ve_plot <- plot_smooths(model = h_model_gam2,
 																	 series = age,
 																	 comparison = vaccination, 
-																	 transform =plogis) + 
+																	 transform = plogis) + 
 	scale_x_continuous(name = "Age (years)", breaks = c(seq(20, 90, by = 10)), 1) + 
 	scale_y_continuous(labels = scales::percent_format(accuracy=1,suffix = ""), 
 										 name = "Probability of hospitalization (%)",
@@ -88,12 +88,12 @@ one_plot <- ggplot() +
 							aes(x= age, ymin = CI_lower, ymax = CI_upper), 
 							alpha = 0.2, 
 							fill= "#E69F00") +
-	expand_limits(x = c(18, 96), y = c(0, 0.6)) +
+	expand_limits(x = c(18, 96), y = c(0, 0.5)) +
 	theme_bw() +
 	scale_x_continuous(name = "Age (years)", breaks = seq(20, 90, by = 10), 1) +
 	scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = ""),
 										 name = "Probability of hospitalization (%)", 
-										 breaks = seq(0.0, 0.6, by = 0.1),1)+
+										 breaks = seq(0.0, 0.5, by = 0.1),1)+
 	scale_colour_manual(values = cbPalette)+
 	theme(legend.justification = c(0.2, 1), legend.position = c(0.2, 0.9),
 				axis.text.x = element_text(angle = 0, hjust = 0.5))+
@@ -102,6 +102,6 @@ one_plot <- ggplot() +
 one_plot
 
 # Save new plot in a file
-# pdf("one_plot.pdf", width = 10, height = 5) 
+# pdf("one_plot1.pdf", width = 6, height = 5) 
 # one_plot
 # dev.off()
