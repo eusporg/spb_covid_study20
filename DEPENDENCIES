@@ -42,3 +42,4 @@ Imports:
     lmtest (>= 0.9-38),
     Publish (>= 2020.12.23)
     gratia (>= 0.6.0)
+    tidymv (>= 3.2.1)
