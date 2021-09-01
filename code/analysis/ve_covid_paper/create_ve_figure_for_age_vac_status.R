@@ -66,7 +66,7 @@ figure_1 <- ggplot() +
 				legend.position = "none")+ 
 	labs(color = "", linetype = "") 
 
-figure_1
+# figure_1
 
 # Save plot in a file
 # pdf("figure_1.pdf", width = 10, height = 5) 
@@ -99,7 +99,7 @@ one_plot <- ggplot() +
 				axis.text.x = element_text(angle = 0, hjust = 0.5))+
 	labs(color = "", linetype = "")
 
-one_plot
+# one_plot
 
 # Save new plot in a file
 # pdf("one_plot1.pdf", width = 6, height = 5) 

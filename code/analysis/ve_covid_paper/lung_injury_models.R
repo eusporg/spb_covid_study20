@@ -32,14 +32,14 @@ vcov_sandwich.lung_model_0vs1234_crude <- sandwich(lung_model_0vs1234_crude, typ
 
 # coeffs and ci
 exp(coef(lung_model_0vs1234_crude)[-1])
-# vac_status_simple 0.6387707 
+# vac_status_simple 0.6386104 
 exp(coefci(lung_model_0vs1234_crude, vcov = vcov_sandwich.lung_model_0vs1234_crude))
-# vac_status_simple 0.5683935 0.7178618
+# vac_status_simple 0.5682502 0.7176824
 
 (1-exp(coef(lung_model_0vs1234_crude)[-1]))*100
-# vac_status_simple 36.12293
+# vac_status_simple 36.13896
 (1-exp(coefci(lung_model_0vs1234_crude, vcov = vcov_sandwich.lung_model_0vs1234_crude)))*100
-# vac_status_simple 43.16065   28.21382
+# vac_status_simple 43.17498   28.23176
 
 lung_model_0vs1234_adj <- glm(ct_score_simple ~ 
 																age + 
@@ -56,14 +56,14 @@ vcov_sandwich.lung_model_0vs1234_adj <- sandwich(lung_model_0vs1234_adj, type = 
 
 # coeffs and ci
 exp(coef(lung_model_0vs1234_adj)[-1])
-# vac_status_simple 0.4572608 
+# vac_status_simple 0.4569664 
 exp(coefci(lung_model_0vs1234_adj, vcov = vcov_sandwich.lung_model_0vs1234_adj))
-# vac_status_simple 0.4039675 0.5175848
+# vac_status_simple 0.4037003 0.5172606
 
 (1-exp(coef(lung_model_0vs1234_adj)[-1]))*100
-# vac_status_simple 54.273921 
+# vac_status_simple 54.303359
 (1-exp(coefci(lung_model_0vs1234_adj, vcov = vcov_sandwich.lung_model_0vs1234_adj)))*100
-# vac_status_simple 59.603255  48.241516
+# vac_status_simple 59.629966  48.273936
 
 # More than 25% == 0 vs 2, 3+4
 # ct_score_0vs234
@@ -82,14 +82,14 @@ vcov_sandwich.lung_model_0vs234_crude <- sandwich(lung_model_0vs234_crude, type 
 
 # coeffs and ci
 exp(coef(lung_model_0vs234_crude)[-1])
-# vac_status_simple 0.5922682 
+# vac_status_simple 0.5921195
 exp(coefci(lung_model_0vs234_crude, vcov = vcov_sandwich.lung_model_0vs234_crude))
-# vac_status_simple 0.4846299 0.7238134
+# vac_status_simple 0.4845080 0.7236322
 
 (1-exp(coef(lung_model_0vs234_crude)[-1]))*100
-# vac_status_simple 40.77318
+# vac_status_simple 40.78805
 (1-exp(coefci(lung_model_0vs234_crude, vcov = vcov_sandwich.lung_model_0vs234_crude)))*100
-# vac_status_simple 51.53701 27.61866
+# vac_status_simple 51.54920 27.63678
 
 lung_model_0vs234_adj <- glm(ct_score_0vs234 ~ 
 																age + 
@@ -106,14 +106,14 @@ vcov_sandwich.lung_model_0vs234_adj <- sandwich(lung_model_0vs234_adj, type = "H
 
 # coeffs and ci
 exp(coef(lung_model_0vs234_adj)[-1])
-# vac_status_simple 0.3579901 
+# vac_status_simple 0.3576057
 exp(coefci(lung_model_0vs234_adj, vcov = vcov_sandwich.lung_model_0vs234_adj))
-# vac_status_simple 0.28559282 0.4487399
+# vac_status_simple 0.28526856 0.44828589
 
 (1-exp(coef(lung_model_0vs234_adj)[-1]))*100
-# vac_status_simple 64.200993
+# vac_status_simple 64.239425
 (1-exp(coefci(lung_model_0vs234_adj, vcov = vcov_sandwich.lung_model_0vs234_adj)))*100
-# vac_status_simple 71.440718  55.126011
+# vac_status_simple 71.473144  55.171411
 
 # More than 50% == 0 vs 3+4
 # ct_score_0vs34
@@ -132,14 +132,14 @@ vcov_sandwich.lung_model_0vs34_crude <- sandwich(lung_model_0vs34_crude, type = 
 
 # coeffs and ci
 exp(coef(lung_model_0vs34_crude)[-1])
-# vac_status_simple 0.4193269 
+# vac_status_simple 0.4192216
 exp(coefci(lung_model_0vs34_crude, vcov = vcov_sandwich.lung_model_0vs34_crude))
-# vac_status_simple 0.25512398 0.68921406
+# vac_status_simple 0.25505988 0.68904123
 
 (1-exp(coef(lung_model_0vs34_crude)[-1]))*100
-# vac_status_simple 58.06731 
+# vac_status_simple 58.07784
 (1-exp(coefci(lung_model_0vs34_crude, vcov = vcov_sandwich.lung_model_0vs34_crude)))*100
-# vac_status_simple 74.48760 31.07859
+# vac_status_simple 74.49401 31.09588
 
 lung_model_0vs34_adj <- glm(ct_score_0vs34 ~ 
 															age + 
@@ -156,11 +156,11 @@ vcov_sandwich.lung_model_0vs34_adj <- sandwich(lung_model_0vs34_adj, type = "HC1
 
 # coeffs and ci
 exp(coef(lung_model_0vs34_adj)[-1])
-# vac_status_simple  0.2420246 
+# vac_status_simple   0.2417356
 exp(coefci(lung_model_0vs34_adj, vcov = vcov_sandwich.lung_model_0vs34_adj))
-# vac_status_simple 0.143717309 0.407577392
+# vac_status_simple 0.143538911 0.407109766
 
 (1-exp(coef(lung_model_0vs34_adj)[-1]))*100
-# vac_status_simple 75.797536
+# vac_status_simple 75.826442
 (1-exp(coefci(lung_model_0vs34_adj, vcov = vcov_sandwich.lung_model_0vs34_adj)))*100
-# vac_status_simple 85.628269  59.24226080
+# vac_status_simple 85.646109  59.289023

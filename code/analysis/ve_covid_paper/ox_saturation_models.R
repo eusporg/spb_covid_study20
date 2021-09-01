@@ -33,21 +33,19 @@ sat_model_96_vs_more_crude <- glm(as.factor(sat_score_96_vs_more) ~ vac_status_s
 																	data = trc_dt, 
 																	family = binomial(link = "logit"))
 
-summary(sat_model_96_vs_more_crude)
-tbl_regression(sat_model_96_vs_more_crude, exponentiate = T) 
 # covariance matrix for ci
 vcov_sandwich.sat_model_96_vs_more_crude <- sandwich(sat_model_96_vs_more_crude, type = "HC1")
 
 # coeffs and ci
 exp(coef(sat_model_96_vs_more_crude)[-1])
-# vac_status_simple 0.4678557 
+# vac_status_simple 0.4678175
 exp(coefci(sat_model_96_vs_more_crude, vcov = vcov_sandwich.sat_model_96_vs_more_crude))
-# vac_status_simple 0.28233221 0.77528868
+# vac_status_simple 0.28230913 0.77522535
 
 (1-exp(coef(sat_model_96_vs_more_crude)[-1]))*100
-# vac_status_simple 50.05862
+# vac_status_simple 53.21825
 (1-exp(coefci(sat_model_96_vs_more_crude, vcov = vcov_sandwich.sat_model_96_vs_more_crude)))*100
-# vac_status_simple 68.62287 20.51086
+# vac_status_simple 71.76909 22.47747
 
 sat_model_96_vs_more_adj <- glm(sat_score_96_vs_more ~ 
 																	age + 
@@ -57,21 +55,19 @@ sat_model_96_vs_more_adj <- glm(sat_score_96_vs_more ~
 																data = trc_dt[!is.na(sat_score_96_vs_more)], 
 																family = binomial(link = "logit"))
 
-summary(sat_model_96_vs_more_adj)
-tbl_regression(sat_model_96_vs_more_adj, exponentiate = T) 
 # covariance matrix for ci
 vcov_sandwich.sat_model_96_vs_more_adj <- sandwich(sat_model_96_vs_more_adj, type = "HC1")
 
 # coeffs and ci
 exp(coef(sat_model_96_vs_more_adj)[-1])
-# vac_status_simple  0.3036418 
+# vac_status_simple  0.3035670
 exp(coefci(sat_model_96_vs_more_adj, vcov = vcov_sandwich.sat_model_96_vs_more_adj))
-# vac_status_simple 0.1812215984 0.508760217
+# vac_status_simple 0.1811762217 0.508637013
 
 (1-exp(coef(sat_model_96_vs_more_adj)[-1]))*100
-# vac_status_simple 69.635820 
+# vac_status_simple 69.643299
 (1-exp(coefci(sat_model_96_vs_more_adj, vcov = vcov_sandwich.sat_model_96_vs_more_adj)))*100
-# vac_status_simple 81.877840  49.123978
+# vac_status_simple 81.882378  49.136299
 
 # Less than 94%
 # sat_model_94_vs_more == 0 vs 2+3
@@ -83,21 +79,19 @@ sat_model_94_vs_more_crude <- glm(as.factor(sat_score_94_vs_more) ~ vac_status_s
 																	data = trc_dt, 
 																	family = binomial(link = "logit"))
 
-summary(sat_model_94_vs_more_crude)
-tbl_regression(sat_model_94_vs_more_crude, exponentiate = T) 
 # covariance matrix for ci
 vcov_sandwich.sat_model_94_vs_more_crude <- sandwich(sat_model_94_vs_more_crude, type = "HC1")
 
 # coeffs and ci
 exp(coef(sat_model_94_vs_more_crude)[-1])
-# vac_status_simple 0.5818315
+# vac_status_simple 0.5813982 
 exp(coefci(sat_model_94_vs_more_crude, vcov = vcov_sandwich.sat_model_94_vs_more_crude))
-# vac_status_simple 0.31573604 1.07218644
+# vac_status_simple 0.31549880 1.07139496
 
 (1-exp(coef(sat_model_94_vs_more_crude)[-1]))*100
-# vac_status_simple 41.81685
+# vac_status_simple 41.86018
 (1-exp(coefci(sat_model_94_vs_more_crude, vcov = vcov_sandwich.sat_model_94_vs_more_crude)))*100
-# vac_status_simple 68.42640 -7.218644
+# vac_status_simple 68.45012 -7.139496
 
 sat_model_94_vs_more_adj <- glm(sat_score_94_vs_more ~ 
 																	age + 
@@ -107,21 +101,19 @@ sat_model_94_vs_more_adj <- glm(sat_score_94_vs_more ~
 																data = trc_dt[!is.na(sat_score_94_vs_more)], 
 																family = binomial(link = "logit"))
 
-summary(sat_model_94_vs_more_adj)
-tbl_regression(sat_model_94_vs_more_adj, exponentiate = T) 
 # covariance matrix for ci
 vcov_sandwich.sat_model_94_vs_more_adj <- sandwich(sat_model_94_vs_more_adj, type = "HC1")
 
 # coeffs and ci
 exp(coef(sat_model_94_vs_more_adj)[-1])
-# vac_status_simple  0.3873692 
+# vac_status_simple  0.3878276 
 exp(coefci(sat_model_94_vs_more_adj, vcov = vcov_sandwich.sat_model_94_vs_more_adj))
-# vac_status_simple 0.2079149743 0.721712739
+# vac_status_simple 0.2081766085 0.722512711
 
 (1-exp(coef(sat_model_94_vs_more_adj)[-1]))*100
-# vac_status_simple 61.263082
+# vac_status_simple 61.217240 
 (1-exp(coefci(sat_model_94_vs_more_adj, vcov = vcov_sandwich.sat_model_94_vs_more_adj)))*100
-# vac_status_simple 79.208503  27.82873
+# vac_status_simple 79.182339  27.748729
 
 # Less than 92%
 # sat_model_92_vs_more == 0 vs 3
@@ -133,21 +125,19 @@ sat_model_92_vs_more_crude <- glm(as.factor(sat_score_92_vs_more) ~ vac_status_s
 																	data = trc_dt, 
 																	family = binomial(link = "logit"))
 
-summary(sat_model_92_vs_more_crude)
-tbl_regression(sat_model_92_vs_more_crude, exponentiate = T) 
 # covariance matrix for ci
 vcov_sandwich.sat_model_92_vs_more_crude <- sandwich(sat_model_92_vs_more_crude, type = "HC1")
 
 # coeffs and ci
 exp(coef(sat_model_92_vs_more_crude)[-1])
-# vac_status_simple 0.5776001
+# vac_status_simple 0.5771699 
 exp(coefci(sat_model_92_vs_more_crude, vcov = vcov_sandwich.sat_model_92_vs_more_crude))
-# vac_status_simple 0.179902758 1.854456416
+# vac_status_simple 0.179768145 1.853081659
 
 (1-exp(coef(sat_model_92_vs_more_crude)[-1]))*100
-# vac_status_simple 42.23999
+# vac_status_simple 42.28301
 (1-exp(coefci(sat_model_92_vs_more_crude, vcov = vcov_sandwich.sat_model_92_vs_more_crude)))*100
-# vac_status_simple 82.00972 -85.44564
+# vac_status_simple 82.02319 -85.30817
 
 sat_model_92_vs_more_adj <- glm(sat_score_92_vs_more ~ 
 																	age + 
@@ -157,18 +147,16 @@ sat_model_92_vs_more_adj <- glm(sat_score_92_vs_more ~
 																data = trc_dt[!is.na(sat_score_92_vs_more)], 
 																family = binomial(link = "logit"))
 
-summary(sat_model_92_vs_more_adj)
-tbl_regression(sat_model_92_vs_more_adj, exponentiate = T) 
 # covariance matrix for ci
 vcov_sandwich.sat_model_92_vs_more_adj <- sandwich(sat_model_92_vs_more_adj, type = "HC1")
 
 # coeffs and ci
 exp(coef(sat_model_92_vs_more_adj)[-1])
-# vac_status_simple  0.3388173
+# vac_status_simple  0.338905
 exp(coefci(sat_model_92_vs_more_adj, vcov = vcov_sandwich.sat_model_92_vs_more_adj))
-# vac_status_simple 0.10251407520 1.1198187906
+# vac_status_simple 0.10255436515 1.1199583908
 
 (1-exp(coef(sat_model_92_vs_more_adj)[-1]))*100
-# vac_status_simple 66.11827 
+# vac_status_simple 66.10950 
 (1-exp(coefci(sat_model_92_vs_more_adj, vcov = vcov_sandwich.sat_model_92_vs_more_adj)))*100
-# vac_status_simple 89.748592  -11.981879
+# vac_status_simple 89.744563  -11.995839

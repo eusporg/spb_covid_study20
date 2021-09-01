@@ -24,7 +24,7 @@ model_sex_F_1 <- glm(hospitalization ~
 										 	vac_status_simple,
 										 data = trc_dt[sex == "F"], 
 										 family = binomial(link = "logit"))
-# summary(model_sex_F_1)
+
 # covariance matrix for ci
 vcov_sandwich.model_sex_F_1 <- sandwich(model_sex_F_1, type = "HC1")
 
@@ -43,19 +43,19 @@ model_sex_M_1 <- glm(hospitalization ~
 										 	vac_status_simple ,
 										 data = trc_dt[sex == "M"], 
 										 family = binomial(link = "logit"))
-summary(model_sex_M_1)
+
 # covariance matrix for ci
 vcov_sandwich.model_sex_M_1 <- sandwich(model_sex_M_1, type = "HC1")
 
 exp(coef(model_sex_M_1)[-1]) 
-# vac_status_simple 0.464509
+# vac_status_simple 0.4644082
 exp(coefci(model_sex_M_1, vcov = vcov_sandwich.model_sex_M_1))
-# vac_status_simple 0.23618221 0.91356844
+# vac_status_simple 0.23613092 0.91337026
 
 (1-exp(coef(model_sex_M_1)[-1]))*100
-# vac_status_simple  53.5491
+# vac_status_simple  53.55918 
 (1-exp(coefci(model_sex_M_1, vcov = vcov_sandwich.model_sex_M_1)))*100
-# vac_status_simple 76.38178  8.643156
+# vac_status_simple 76.38691  8.662974
 
 # adj OR by sex
 model_sex_F_2 <- glm(hospitalization ~  
@@ -64,13 +64,12 @@ model_sex_F_2 <- glm(hospitalization ~
 										 	vac_status_simple,
 										 data = trc_dt[sex == "F"], 
 										 family = binomial(link = "logit"))
-summary(model_sex_F_2)
 
 # covariance matrix for ci
 vcov_sandwich.model_sex_F_2 <- sandwich(model_sex_F_2, type = "HC1")
 
 exp(coef(model_sex_F_2)[-1]) 
-# vac_status_simple 0.1637325
+# vac_status_simple  0.1637325 
 exp(coefci(model_sex_F_2, vcov = vcov_sandwich.model_sex_F_2))
 # vac_status_simple 0.0792605522 0.3382306234
 
@@ -86,19 +85,19 @@ model_sex_M_2 <- glm(hospitalization ~
 										 	vac_status_simple,
 										 data = trc_dt[sex == "M"], 
 										 family = binomial(link = "logit"))
-summary(model_sex_M_2)
+
 # covariance matrix for ci
 vcov_sandwich.model_sex_M_2 <- sandwich(model_sex_M_2, type = "HC1")
 
 exp(coef(model_sex_M_2)[-1]) 
-# vac_status_simple 0.2402415
+# vac_status_simple 0.2400841
 exp(coefci(model_sex_M_2, vcov = vcov_sandwich.model_sex_M_2))
-# vac_status_simple 0.1182337089 0.488151489
+# vac_status_simple 0.1181559889 0.487832823
 
 (1-exp(coef(model_sex_M_2)[-1]))*100
-# vac_status_simple   75.975854 
+# vac_status_simple   75.99159
 (1-exp(coefci(model_sex_M_2, vcov = vcov_sandwich.model_sex_M_2)))*100
-# vac_status_simple 88.176629 51.184851
+# vac_status_simple 88.184401 51.216718
 
 
 # OR by age
@@ -111,7 +110,6 @@ model_age_less50_1 <- glm(hospitalization ~
 													data = trc_dt[age_group2 == "18-49"], 
 													family = binomial(link = "logit"))
 
-summary(model_age_less50_1)
 # covariance matrix for ci
 vcov_sandwich.model_age_less50_1 <- sandwich(model_age_less50_1, type = "HC1")
 
@@ -130,19 +128,18 @@ model_age_more50_1 <- glm(hospitalization ~
 													data = trc_dt[age_group2 =="50+"], 
 													family = binomial(link = "logit"))
 
-summary(model_age_more50_1)
 # covariance matrix for ci
 vcov_sandwich.model_age_more50_1 <- sandwich(model_age_more50_1, type = "HC1")
 
 exp(coef(model_age_more50_1)[-1]) 
-# vac_status_simple 0.2262034
+# vac_status_simple 0.2261593 
 exp(coefci(model_age_more50_1, vcov = vcov_sandwich.model_age_more50_1))
-# vac_status_simple 0.1344107 0.38068371
+# vac_status_simple 0.13438447 0.38060953
 
 (1-exp(coef(model_age_more50_1)[-1]))*100
-# vac_status_simple   77.37966
+# vac_status_simple   77.38407 
 (1-exp(coefci(model_age_more50_1, vcov = vcov_sandwich.model_age_more50_1)))*100
-# vac_status_simple 86.55893 61.93163
+# vac_status_simple 86.56155 61.93905
 
 # adj OR by age
 model_age_less50_2 <- glm(hospitalization ~  
@@ -153,7 +150,6 @@ model_age_less50_2 <- glm(hospitalization ~
 													data = trc_dt[age_group2 == "18-49"], 
 													family = binomial(link = "logit"))
 
-summary(model_age_less50_2)
 # covariance matrix for ci
 vcov_sandwich.model_age_less50_2 <- sandwich(model_age_less50_2, type = "HC1")
 
@@ -175,19 +171,18 @@ model_age_more50_2 <- glm(hospitalization ~
 													data = trc_dt[age_group2 == "50+"], 
 													family = binomial(link = "logit"))
 
-summary(model_age_more50_2)
 # covariance matrix for ci
 vcov_sandwich.model_age_more50_2 <- sandwich(model_age_more50_2, type = "HC1")
 
 exp(coef(model_age_more50_2)[-1]) 
-# vac_status_simple 0.1818274
+# vac_status_simple 0.1817762 
 exp(coefci(model_age_more50_2, vcov = vcov_sandwich.model_age_more50_2))
-# vac_status_simple 0.1060958773 0.3116162789
+# vac_status_simple 0.1060662254 0.3115279822
 
 (1-exp(coef(model_age_more50_2)[-1]))*100
-# vac_status_simple   81.817260 
+# vac_status_simple   81.822377
 (1-exp(coefci(model_age_more50_2, vcov = vcov_sandwich.model_age_more50_2)))*100
-# vac_status_simple 89.390412  68.838372
+# vac_status_simple 89.393377  68.847202
 
 # OR by LDCT triage centre
 model_LDCT1_1 <- glm(hospitalization ~  
@@ -195,26 +190,24 @@ model_LDCT1_1 <- glm(hospitalization ~
 										 data = trc_dt[source == "facility_1"], 
 										 family = binomial(link = "logit"))
 
-summary(model_LDCT1_1)
 # covariance matrix for ci
 vcov_sandwich.model_LDCT1_1 <- sandwich(model_LDCT1_1, type = "HC1")
 
 exp(coef(model_LDCT1_1)[-1]) 
-# vac_status_simple 0.3389475
+# vac_status_simple 0.3388792
 exp(coefci(model_LDCT1_1, vcov = vcov_sandwich.model_LDCT1_1))
-# vac_status_simple 0.15878078 0.72354717
+# vac_status_simple 0.15874880 0.72340161
 
 (1-exp(coef(model_LDCT1_1)[-1]))*100
-# vac_status_simple   66.10525
+# vac_status_simple   66.11208 
 (1-exp(coefci(model_LDCT1_1, vcov = vcov_sandwich.model_LDCT1_1)))*100
-# vac_status_simple 84.12192 27.64528
+# vac_status_simple 84.12512 27.65984
 
 model_LDCT2_1 <- glm(hospitalization ~  
 										 	vac_status_simple,
 										 data = trc_dt[source == "facility_2"], 
 										 family = binomial(link = "logit"))
 
-summary(model_LDCT2_1)
 # covariance matrix for ci
 vcov_sandwich.model_LDCT2_1 <- sandwich(model_LDCT2_1, type = "HC1")
 
@@ -235,20 +228,19 @@ model_LDCT1_2 <- glm(hospitalization ~
 										 	vac_status_simple,
 										 data = trc_dt[source == "facility_1"], 
 										 family = binomial(link = "logit"))
-# tbl_regression(model_LDCT_1, exponentiate = TRUE)
-summary(model_LDCT1_2)
+
 # covariance matrix for ci
 vcov_sandwich.model_LDCT1_2 <- sandwich(model_LDCT1_2, type = "HC1")
 
 exp(coef(model_LDCT1_2)[-1]) 
-# vac_status_simple 0.2100014 
+# vac_status_simple 0.2098635
 exp(coefci(model_LDCT1_2, vcov = vcov_sandwich.model_LDCT1_2))
-# vac_status_simple 0.0966493786 0.45629475
+# vac_status_simple 0.0965846436 0.456001107
 
 (1-exp(coef(model_LDCT1_2)[-1]))*100
-# vac_status_simple   78.999856 
+# vac_status_simple   79.013646
 (1-exp(coefci(model_LDCT1_2, vcov = vcov_sandwich.model_LDCT1_2)))*100
-# vac_status_simple 90.335062   54.370525
+# vac_status_simple 90.341536   54.399889
 
 model_LDCT2_2 <- glm(hospitalization ~  
 										 	age +
@@ -256,8 +248,6 @@ model_LDCT2_2 <- glm(hospitalization ~
 										 	vac_status_simple,
 										 data = trc_dt[source == "facility_2"], 
 										 family = binomial(link = "logit"))
-# tbl_regression(model_LDCT_1, exponentiate = TRUE)
-summary(model_LDCT2_2)
 
 # covariance matrix for ci
 vcov_sandwich.model_LDCT2_2 <- sandwich(model_LDCT2_2, type = "HC1")
