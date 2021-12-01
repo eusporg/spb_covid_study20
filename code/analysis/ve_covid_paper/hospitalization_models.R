@@ -27,14 +27,14 @@ hosp_model_1 <- glm(hospitalization ~ vac_status_simple,
 vcov_sandwich.hosp_model_1 <- sandwich(hosp_model_1, type = "HC1")
 
 exp(coef(hosp_model_1)[-1])
-# vac_status_simple 0.3384803 
+# vac_status_simple 0.3384523
 exp(coefci(hosp_model_1, vcov = vcov_sandwich.hosp_model_1))
-# vac_status_simple 0.20794914 0.55094666
+# vac_status_simple 0.20793199 0.55090124
 
 (1-exp(coef(hosp_model_1)[-1]))*100
-# vac_status_simple 66.15197
+# vac_status_simple 66.15477
 (1-exp(coefci(hosp_model_1, vcov = vcov_sandwich.hosp_model_1)))*100
-# vac_status_simple 79.20509 44.90533
+# vac_status_simple 79.20680 44.90988
 
 # adjOR against referral to hospital
 hosp_model_2 <- glm(hospitalization ~ 
@@ -45,19 +45,16 @@ hosp_model_2 <- glm(hospitalization ~
 										data = trc_dt, 
 										family = binomial(link = "logit"))
 
-tbl_regression(hosp_model_2, exponentiate = T) 
-# tbl <- tbl_regression(hosp_model_2, exponentiate = T) 
-# as_kable(tbl, format = "latex")
 
 # covariance matrix for ci
 vcov_sandwich.hosp_model_2 <- sandwich(hosp_model_2, type = "HC1")
 
 exp(coef(hosp_model_2)[-1]) 
-# vac_status_simple 0.193970 
+# vac_status_simple 0.1939175
 exp(coefci(hosp_model_2, vcov = vcov_sandwich.hosp_model_2))
-# vac_status_simple 0.1171310855 0.3212159525
+# vac_status_simple 0.1170989406 0.321130232
 
 (1-exp(coef(hosp_model_2)[-1]))*100
-# vac_status_simple 80.602997  
+# vac_status_simple 80.608247 
 (1-exp(coefci(hosp_model_2, vcov = vcov_sandwich.hosp_model_2)))*100
-# vac_status_simple 88.286891  67.878405
+# vac_status_simple 88.290106  67.886977

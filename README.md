@@ -1,8 +1,8 @@
 # Study of the Spread of COVID-19 in Saint Petersburg, Russia
 
-Data and replication files for Study of the Spread of COVID-19 in Saint Petersburg, Russia ([NCT04406038](https://clinicaltrials.gov/ct2/show/NCT04406038), [ISRCTN11060415](https://www.isrctn.com/ISRCTN11060415)).
+Data and replication files for Study of the Spread of COVID-19 in Saint Petersburg, Russia ([NCT04406038](https://clinicaltrials.gov/ct2/show/NCT04406038), [ISRCTN11060415](https://www.isrctn.com/ISRCTN11060415)) and Real-world Evidence of COVID-19 Vaccines Effectiveness ([NCT04981405](https://clinicaltrials.gov/ct2/show/NCT04981405)).
 
-This repository features the data and replication files for the analysis of the seroprevalence and spread of COVID-19 in St. Petersburg, Russia.
+This repository features the data and replication files for the analysis of the seroprevalence and spread of COVID-19 in St. Petersburg, Russia, as well as for the analysis of COVID-19 vaccine effectiveness.
 
 ## Short study summary
 

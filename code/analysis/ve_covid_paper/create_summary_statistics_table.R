@@ -14,7 +14,7 @@ setwd(Sys.getenv('SPB_COVID_STUDY_PATH'))
 
 
 # Load data
-load("data/ve_ct_paper/trc_dt.Rdata")
+load("data/ve_covid_paper/trc_dt.Rdata")
 
 # Select variables for the table
 # dput(names(trc_dt))

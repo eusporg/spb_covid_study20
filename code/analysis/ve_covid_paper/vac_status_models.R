@@ -31,17 +31,17 @@ part_vac_model_crude <- glm(hospitalization ~
 vcov_sandwich.part_vac_model_crude <- sandwich(part_vac_model_crude, type = "HC1")
 
 exp(coef(part_vac_model_crude)[-1])
-# vvac_status3part_vac 0.6284992 
+# vvac_status3part_vac 0.6299374
 # vac_status3full_vac 0.3339379 
 exp(coefci(part_vac_model_crude, vcov = vcov_sandwich.part_vac_model_crude))
-# vac_status3part_vac 0.34305895 1.15143845
+# vac_status3part_vac 0.34383828 1.15409245
 # vac_status3full_vac 0.20511612 0.54366518
 
 (1-exp(coef(part_vac_model_crude)[-1]))*100
-# vvac_status3part_vac 37.15008 
+# vvac_status3part_vac 37.00626
 # vac_status3full_vac 66.60621
 (1-exp(coefci(part_vac_model_crude, vcov = vcov_sandwich.part_vac_model_crude)))*100
-# vac_status3part_vac 65.69411 -15.14384
+# vac_status3part_vac 65.61617 -15.40924
 # vac_status3full_vac 79.48839  45.63348
 
 part_vac_model_adj <- glm(hospitalization ~
@@ -57,15 +57,15 @@ part_vac_model_adj <- glm(hospitalization ~
 vcov_sandwich.part_vac_model_adj <- sandwich(part_vac_model_adj, type = "HC1")
 
 exp(coef(part_vac_model_adj)[-1])
-# vvac_status3part_vac 0.6521487
-# vac_status3full_vac 0.1915862
+# vvac_status3part_vac 0.6562901
+# vac_status3full_vac 0.1915800 
 exp(coefci(part_vac_model_adj, vcov = vcov_sandwich.part_vac_model_adj))
-# vac_status3part_vac 0.3524132651 1.2068159435
-# vac_status3full_vac 0.1156631509 0.3173463149
+# vac_status3part_vac 0.3546156350 1.2146016549
+# vac_status3full_vac 0.1156592894 0.3173364709
 
 (1-exp(coef(part_vac_model_adj)[-1]))*100
-# vvac_status3part_vac 34.785128 
-# vac_status3full_vac 80.841379 
+# vvac_status3part_vac 34.785128 -> 34.370987
+# vac_status3full_vac 80.841996
 (1-exp(coefci(part_vac_model_adj, vcov = vcov_sandwich.part_vac_model_adj)))*100
-# vac_status3part_vac 64.758673 -20.681594
-# vac_status3full_vac 88.433685  68.265369
+# vac_status3part_vac 64.538437 -21.460165
+# vac_status3full_vac 88.434071  68.266353

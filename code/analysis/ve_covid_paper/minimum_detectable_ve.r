@@ -8,9 +8,9 @@ library(epiR)
 load("data/ve_ct_paper/trc_dt.Rdata")
 
 # Study characteristics
-total_patients <- trc_dt[, .N] # 1291
+total_patients <- trc_dt[, .N] # 13893
 completely_vaccinated_patients <- trc_dt[vac_status3 == "full_vac", .N] # 1291
-partially_vaccinated_patients <- trc_dt[vac_status3 == "part_vac", .N] # 449
+partially_vaccinated_patients <- trc_dt[vac_status3 == "part_vac", .N] # 448
 
 # Outcomes
 hospitalized_patients <- trc_dt[hospitalization == 1, .N] # 495
