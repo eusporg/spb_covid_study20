@@ -18,7 +18,7 @@ library(lmtest)
 
 # Declare working directory beforehand in an environment variable
 # SPB_COVID_STUDY_PATH = "path_to_your_folder"
-# with the aid of file.edit(file.path("~", ".Renviron")); file.rename(file.path("~", ".Renviron.R"), file.path("~", ".Renviron"))
+# with the aid of usethis::edit_r_environ()
 # Restart R session for the changes to make effect
 setwd(Sys.getenv('SPB_COVID_STUDY_PATH'))
 

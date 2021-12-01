@@ -4,6 +4,12 @@
 # study
 library(epiR)
 
+# Declare working directory beforehand in an environment variable
+# SPB_COVID_STUDY_PATH = "path_to_your_folder"
+# with the aid of usethis::edit_r_environ()
+# Restart R session for the changes to make effect
+setwd(Sys.getenv('SPB_COVID_STUDY_PATH'))
+
 # Load data to extract characteristics
 load("data/ve_ct_paper/trc_dt.Rdata")
 
