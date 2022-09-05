@@ -100,6 +100,22 @@ exp(coefci(model_sex_M_2, vcov = vcov_sandwich.model_sex_M_2))
 # vac_status_simple 88.184401 51.216718
 
 
+# shares by age 
+# Referred to outpatient follow-up or hospital (vaccinated/non-vaccinate+partially)
+trc_dt[sex == "F", .N, .(hospitalization, vac_status_simple)] 
+#    hospitalization vac_status_simple    N
+# 1:               0                 0 7518
+# 2:               0                 1  752
+# 3:               1                 0  307
+# 4:               1                 1    8
+
+trc_dt[sex == "M", .N, .(hospitalization, vac_status_simple)] 
+#    hospitalization vac_status_simple    N
+# 1:               0                 0 4606
+# 2:               0                 1  522
+# 3:               1                 0  171
+# 4:               1                 1    9
+
 # OR by age
 trc_dt[age <50, age_group2 := "18-49"]
 trc_dt[age >=50, age_group2 := "50+"]
@@ -184,6 +200,23 @@ exp(coefci(model_age_more50_2, vcov = vcov_sandwich.model_age_more50_2))
 (1-exp(coefci(model_age_more50_2, vcov = vcov_sandwich.model_age_more50_2)))*100
 # vac_status_simple 89.393377  68.847202
 
+
+# Referred to outpatient follow-up or hospital (vaccinated/non-vaccinate+partially)
+trc_dt[age_group2 == "18-49", .N, .(hospitalization, vac_status_simple)] 
+#    hospitalization vac_status_simple     N
+# 1:               0                 0  6997
+# 2:               0                 1   426
+# 3:               1                 0    77
+# 4:               1                 1     2
+
+trc_dt[age_group2 == "50+", .N, .(hospitalization, vac_status_simple)] 
+#    hospitalization vac_status_simple     N
+# 1:               0                 0  5127
+# 2:               1                 0   401
+# 3:               0                 1   848
+# 4:               1                 1    15
+
+
 # OR by LDCT triage centre
 model_LDCT1_1 <- glm(hospitalization ~  
 										 	vac_status_simple,
@@ -261,3 +294,18 @@ exp(coefci(model_LDCT2_2, vcov = vcov_sandwich.model_LDCT2_2))
 # vac_status_simple  81.578285 
 (1-exp(coefci(model_LDCT2_2, vcov = vcov_sandwich.model_LDCT2_2)))*100
 # vac_status_simple 90.514251  64.224274
+
+# Referred to outpatient follow-up or hospital (vaccinated/non-vaccinate+partially)
+trc_dt[source == "facility_1", .N, .(hospitalization, vac_status_simple)] 
+#    hospitalization vac_status_simple    N
+# 1:               0                 0 4967
+# 2:               0                 1  456
+# 3:               1                 0  225
+# 4:               1                 1    7
+
+trc_dt[source == "facility_2", .N, .(hospitalization, vac_status_simple)] 
+#    hospitalization vac_status_simple    N
+# 1:               0                 0 7157
+# 2:               0                 1  818
+# 3:               1                 0  253
+# 4:               1                 1   10
