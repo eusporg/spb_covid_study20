@@ -15,7 +15,7 @@ options(scipen = 999)
 # Restart R session for the changes to make effect
 setwd(Sys.getenv('SPB_COVID_STUDY_PATH'))
 
-load("data/ve_ct_paper/trc_dt.Rdata")
+load("data/ve_covid_paper/trc_dt.Rdata")
 
 # OR against referral to hospital
 hosp_model_1 <- glm(hospitalization ~ vac_status_simple,
@@ -35,6 +35,18 @@ exp(coefci(hosp_model_1, vcov = vcov_sandwich.hosp_model_1))
 # vac_status_simple 66.15477
 (1-exp(coefci(hosp_model_1, vcov = vcov_sandwich.hosp_model_1)))*100
 # vac_status_simple 79.20680 44.90988
+
+# shares
+# Referred to outpatient follow-up (vaccinated/non-vaccinate)
+trc_dt[, .N, .(hospitalization, vac_status_simple)] 
+#    hospitalization vac_status_simple     N
+# 1:               0                 0 12124
+# 2:               0                 1  1274
+
+# Referred to hospital (vaccinated/non-vaccinate)
+#    hospitalization vac_status_simple     N
+# 3:               1                 0   478
+# 4:               1                 1    17
 
 # adjOR against referral to hospital
 hosp_model_2 <- glm(hospitalization ~ 
