@@ -7,7 +7,6 @@ library(stringi)
 library(stringr)
 library(lubridate)
 library(stats)
-library(w)
 library(GJRM)
 
 # Declare working directory beforehand in an environment variable
